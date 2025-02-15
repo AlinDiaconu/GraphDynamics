@@ -1,22 +1,43 @@
 import matplotlib.pyplot as plt
-import numpy as np
+import csv
 
+def creeaza_date(file_path):
+    date = []
+    with open(file_path, 'r') as csvfile:
+        lines = csv.reader(csvfile, delimiter=',')
+        next(lines)
+        for row in lines:
+            for i, value in enumerate(row):
+                if len(date) <= i:
+                    date.append([])
+                try:
+                    date[i].append(float(value) if i > 0 else value)
+                except ValueError:
+                    date[i].append(value)
+    return date
 
-def create_data():
-    x = np.linspace(0, 100, 100)
-    y1 = np.exp(x / 3)  # Increasing graph
-    y2 = np.exp(-x / 3)  # Decreasing graph
-    return x, y1, y2
+def deseneaza_grafic(date):
+    nume, valori_x, valori_y = date
 
+    # Sortarea datelor pe baza valorilor x
+    date_sortate = sorted(zip(valori_x, valori_y, nume))
+    valori_x_sortate, valori_y_sortate, nume_sortate = zip(*date_sortate)
 
-def draw_graph(x, y1, y2):
-    plt.figure(figsize=(8, 6))
-    plt.plot(x, y1, label='Increasing', color='blue')
-    plt.plot(x, y2, label='Decreasing', color='red')
+    # Plasarea punctelor sortate pe grafic cu etichete
+    plt.scatter(valori_x_sortate, valori_y_sortate, color='b', label='Puncte de date')
 
-    plt.xlabel('X')
-    plt.ylabel('Y')
-    plt.title('Increasing and Decreasing Graphs')
-    plt.legend()
-    plt.grid()
+    # Conectarea punctelor sortate cu o linie discontinuă
+    plt.plot(valori_x_sortate, valori_y_sortate, linestyle='dashed', color='r', label='Conexiune')
+
+    # Adăugarea etichetelor pentru fiecare punct
+    for i, nume in enumerate(nume_sortate):
+        plt.text(valori_x_sortate[i], valori_y_sortate[i], nume, fontsize=12, ha='right', rotation=25)
+
+    # Setarea etichetelor și titlului
+    plt.xlabel('Valoare x')
+    plt.ylabel('Valoare y')
+    plt.title('Grafic x si y', fontsize=20)
+    plt.grid(True)
+
+    plt.tight_layout()
     plt.show()
