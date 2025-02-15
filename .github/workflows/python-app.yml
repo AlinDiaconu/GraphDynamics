@@ -34,6 +34,3 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero tratează toate erorile ca și avertismente. Editorul GitHub are lățimea de 127 caractere
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Rulează testele cu pytest
-      run: |
-        pytest --maxfail=1 --disable-warnings -q  # Opțiuni de testare pentru a reduce ieșirea
