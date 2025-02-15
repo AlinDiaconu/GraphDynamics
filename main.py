@@ -1,6 +1,6 @@
-from graph import create_data, draw_graph
+from graph import creeaza_date, deseneaza_grafic
 
 if __name__ == "__main__":
     file_path = 'data.csv'
-    data = create_data(file_path)
-    draw_graph(data)
+    date = creeaza_date(file_path)
+    deseneaza_grafic(date)

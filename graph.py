@@ -1,44 +1,43 @@
 import matplotlib.pyplot as plt
 import csv
-import numpy as np
 
-def create_data(file_path):
-    data = []
+def creeaza_date(file_path):
+    date = []
     with open(file_path, 'r') as csvfile:
         lines = csv.reader(csvfile, delimiter=',')
+        next(lines)
         for row in lines:
             for i, value in enumerate(row):
-                if len(data) <= i:
-                    data.append([])
+                if len(date) <= i:
+                    date.append([])
                 try:
-                    data[i].append(float(value))
+                    date[i].append(float(value) if i > 0 else value)
                 except ValueError:
-                    data[i].append(value)
-    return data
+                    date[i].append(value)
+    return date
 
-def draw_graph(data):
-    # Sort data based on x values
-    sorted_data = sorted(zip(*data))
-    data = list(zip(*sorted_data))
+def deseneaza_grafic(date):
+    nume, valori_x, valori_y = date
 
-    for i in range(1, len(data)):
-        plt.plot(data[0], data[i], linestyle='dashed', marker='o', label=f"Value {i}")
+    # Sortarea datelor pe baza valorilor x
+    date_sortate = sorted(zip(valori_x, valori_y, nume))
+    valori_x_sortate, valori_y_sortate, nume_sortate = zip(*date_sortate)
 
-    y_values = set()
-    for i in range(1, len(data)):
-        y_values.update(data[i])
+    # Plasarea punctelor sortate pe grafic cu etichete
+    plt.scatter(valori_x_sortate, valori_y_sortate, color='b', label='Puncte de date')
 
-    y_labels = [str(int(y)) if y.is_integer() else str(y) for y in sorted(y_values)]
-    plt.yticks(sorted(y_values), y_labels, fontsize=12)  # Increase font size
+    # Conectarea punctelor sortate cu o linie discontinuă
+    plt.plot(valori_x_sortate, valori_y_sortate, linestyle='dashed', color='r', label='Conexiune')
 
-    x_values = data[0]
-    x_labels = [str(int(x)) if x.is_integer() else str(x) for x in x_values]
-    plt.xticks(x_values, x_labels, fontsize=12, rotation=25)  # Increase font size and rotate
+    # Adăugarea etichetelor pentru fiecare punct
+    for i, nume in enumerate(nume_sortate):
+        plt.text(valori_x_sortate[i], valori_y_sortate[i], nume, fontsize=12, ha='right', rotation=25)
 
-    plt.xlabel('X-axis')
-    plt.ylabel('Y-axis')
-    plt.title('GraphDynamics', fontsize=20)
-    plt.grid()
-    plt.legend()
-    plt.tight_layout()  # Adjust layout to prevent overlap
+    # Setarea etichetelor și titlului
+    plt.xlabel('Valoare x')
+    plt.ylabel('Valoare y')
+    plt.title('Grafic x si y', fontsize=20)
+    plt.grid(True)
+
+    plt.tight_layout()
     plt.show()
