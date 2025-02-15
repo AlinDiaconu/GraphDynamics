@@ -1,22 +1,22 @@
 import matplotlib.pyplot as plt
-import numpy as np
+import csv
 
+def create_data(file_path):
+    x = []
+    y = []
+    with open(file_path, 'r') as csvfile:
+        lines = csv.reader(csvfile, delimiter=',')
+        for row in lines:
+            x.append(row[0])
+            y.append(int(row[1]))
+    return x, y
 
-def create_data():
-    x = np.linspace(0, 100, 100)
-    y1 = np.exp(x / 3)  # Increasing graph
-    y2 = np.exp(-x / 3)  # Decreasing graph
-    return x, y1, y2
-
-
-def draw_graph(x, y1, y2):
-    plt.figure(figsize=(8, 6))
-    plt.plot(x, y1, label='Increasing', color='blue')
-    plt.plot(x, y2, label='Decreasing', color='red')
-
-    plt.xlabel('X')
-    plt.ylabel('Y')
-    plt.title('Increasing and Decreasing Graphs')
-    plt.legend()
+def draw_graph(x, y):
+    plt.plot(x, y, color='g', linestyle='dashed', marker='o', label="Weather Data")
+    plt.xticks(rotation=25)
+    plt.xlabel('Dates')
+    plt.ylabel('Temperature')
+    plt.title('Weather Report', fontsize=20)
     plt.grid()
+    plt.legend()
     plt.show()
