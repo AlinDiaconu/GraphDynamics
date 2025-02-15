@@ -1,2 +1,3 @@
 # Temporary files
 *.idea
+__pycache__/
