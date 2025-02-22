@@ -1,6 +1,7 @@
-from graph import creeaza_date, deseneaza_grafic
+import tkinter as tk
+from gui import DataEntryApp
 
 if __name__ == "__main__":
-    file_path = 'data.csv'
-    date = creeaza_date(file_path)
-    deseneaza_grafic(date)
+    root = tk.Tk()
+    app = DataEntryApp(root)
+    root.mainloop()
